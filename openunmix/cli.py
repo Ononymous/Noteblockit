@@ -40,7 +40,7 @@ args = separator_args(
     start = 0.0,
     duration = None,
     no_cuda = False,
-    audio_backend = None,
+    audio_backend = "soundfile",
     niter = 1,
     wiener_win_len = 300,
     residual = "other",
@@ -51,6 +51,7 @@ args = separator_args(
 
 
 def separate(audio, rate):
+    torchaudio.set_audio_backend(args.audio_backend)
     aggregate_dict = None
 
     use_cuda = torch.cuda.is_available()
@@ -66,6 +67,11 @@ def separate(audio, rate):
         pretrained=True,
         filterbank=args.filterbank,
     )
+
+    if rate != separator.sample_rate:
+        audio = torchaudio.transforms.Resample(
+        orig_freq=rate, new_freq=separator.sample_rate
+    )(audio)
 
     # create separator only once to reduce model loading
     # when using multiple files
