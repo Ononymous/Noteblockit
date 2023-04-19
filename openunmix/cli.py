@@ -49,27 +49,23 @@ args = separator_args(
     verbose = True
 )
 
-use_cuda = torch.cuda.is_available()
-device = torch.device("cuda" if use_cuda else "cpu")
-
-separator = utils.load_separator(
-    model_str_or_path=args.model,
-    targets=args.targets,
-    niter=args.niter,
-    residual=args.residual,
-    wiener_win_len=args.wiener_win_len,
-    device=device,
-    pretrained=True,
-    filterbank=args.filterbank,
-)
-
 
 def separate(audio, rate):
-
-    if args.verbose:
-        print("Using ", device)
-    # parsing the output dict
     aggregate_dict = None
+
+    use_cuda = torch.cuda.is_available()
+    device = torch.device("cuda" if use_cuda else "cpu")
+
+    separator = utils.load_separator(
+        model_str_or_path=args.model,
+        targets=args.targets,
+        niter=args.niter,
+        residual=args.residual,
+        wiener_win_len=args.wiener_win_len,
+        device=device,
+        pretrained=True,
+        filterbank=args.filterbank,
+    )
 
     # create separator only once to reduce model loading
     # when using multiple files
