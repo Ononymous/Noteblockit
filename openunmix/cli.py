@@ -33,9 +33,9 @@ class separator_args:
         self.verbose = verbose
 
 args = separator_args(
-    model = "pre-trained/",
+    model = "../pre-trained/",
     targets = ["vocals", "drums", "bass"],
-    outdir = "output/",
+    outdir = "../output/",
     ext = ".wav",
     start = 0.0,
     duration = None,
