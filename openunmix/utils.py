@@ -9,6 +9,7 @@ from pathlib import Path
 from contextlib import redirect_stderr
 import io
 import json
+import streamlit as st
 
 import model
 
@@ -159,7 +160,7 @@ def load_target_models(targets, model_str_or_path="umxhq", device="cpu", pretrai
             models[target].to(device)
         return models
 
-
+@st.cache_resource
 def load_separator(
     model_str_or_path: str = "umxhq",
     targets: Optional[list] = None,

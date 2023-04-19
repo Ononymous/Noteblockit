@@ -1,14 +1,9 @@
-from pathlib import Path
 import torch
 import torchaudio
-import json
-import numpy as np
-import tqdm
 import streamlit as st
 
 import utils
 import predict
-import data
 
 
 # !python openunmix/cli.py \
@@ -67,7 +62,6 @@ separator = utils.load_separator(
     pretrained=True,
     filterbank=args.filterbank,
 )
-@st.cache
 
 
 def separate(audio, rate):
@@ -97,7 +91,7 @@ def separate(audio, rate):
         st.audio(audio_data, format='audio/wav', sample_rate=separator.sample_rate)
 
 st.title('Noteblockit Demo')
-st.image("""https://static.wikia.nocookie.net/minecraft_gamepedia/images/1/18/Note_Block_JE2_BE2.png/revision/latest?cb=20220311024036""")
+st.image("https://static.wikia.nocookie.net/minecraft_gamepedia/images/1/18/Note_Block_JE2_BE2.png/revision/latest?cb=20220311024036")
 st.header('Helps separate audio into 4 tracks: vocals, drums, bass, and other, and combine them into a MIDI file.')
 uploaded_file = st.file_uploader(
     label="Choose a wav file to separate",
