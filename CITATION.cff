@@ -1,0 +1,47 @@
+@book{opensourceseparation:book,
+	Author = {Ethan Manilow and Prem Seetharman and Justin Salamon},
+	Month = Oct.,
+	Publisher = {https://source-separation.github.io/tutorial},
+	Title = {Open Source Tools \& Data for Music Source Separation},
+	Year = 2020,
+	Url = {https://source-separation.github.io/tutorial}
+}
+
+@inproceedings{manilow2018northwestern,
+    title={The Northwestern University Source Separation Library.},
+    author={Manilow, Ethan and Seetharaman, Prem and Pardo, Bryan},
+    booktitle={ISMIR},
+    pages={297--305},
+    year={2018}
+}
+
+@inproceedings{Salamon:Scaper:WASPAA:17,
+  author       = {Salamon, J. and MacConnell, D. and Cartwright, M. and Li, P. and Bello, J.~P.},
+  title        = {Scaper: A Library for Soundscape Synthesis and Augmentation},
+  booktitle.   = {IEEE Workshop on Applications of Signal Processing to Audio and Acoustics (WASPAA)},
+  month        = {Oct.},
+  year         = {2017},
+  pages        = {344--348}
+}
+
+@misc{musdb18,
+  author       = {Rafii, Zafar and
+                  Liutkus, Antoine and
+                  Fabian-Robert St{\"o}ter and
+                  Mimilakis, Stylianos Ioannis and
+                  Bittner, Rachel},
+  title        = {The {MUSDB18} corpus for music separation},
+  month        = dec,
+  year         = 2017,
+  doi          = {10.5281/zenodo.1117372},
+  url          = {https://doi.org/10.5281/zenodo.1117372}
+}
+
+@article{stoter19,  
+  author={F.-R. St\\"oter and S. Uhlich and A. Liutkus and Y. Mitsufuji},  
+  title={Open-Unmix - A Reference Implementation for Music Source Separation},  
+  journal={Journal of Open Source Software},  
+  year=2019,
+  doi = {10.21105/joss.01667},
+  url = {https://doi.org/10.21105/joss.01667}
+}
