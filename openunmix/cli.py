@@ -87,7 +87,7 @@ def separate(audio, rate):
         st.audio(audio_data, format='audio/wav', sample_rate=separator.sample_rate)
 
 st.title('Noteblockit Demo')
-st.image("/noteblock.png")
+st.image("./noteblock.png")
 
 st.header('Helps separate audio into 4 tracks: vocals, drums, bass, and other, and combine them into a MIDI file.')
 uploaded_file = st.file_uploader(
