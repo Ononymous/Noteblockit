@@ -154,9 +154,32 @@ def separate(audio, rate):
 
 
 
+st.set_page_config(
+    page_title="Noteblockit Demo",
+    page_icon="🧊",
+    layout="centered",
+    initial_sidebar_state="expanded",
+)
 
+# write header in the following format:
+# st.sidebar.markdown('''
+# # Sections
+# - [Section 1](#section-1)
+# - [Section 2](#section-2)
+# ''', unsafe_allow_html=True)
 
-st.title('Noteblockit Demo')
+st.sidebar.markdown('''
+# Sections
+- [Home](#home)
+- [Music Source Separator](#separator)
+- [Midi modifier and merger](#mido)
+- [Credits](#credits)
+# Other links
+- [Github](https://github.com/Ononymous/Noteblockit)
+- [Video Demo](https://drive.google.com/file/d/1Is4tc7p6udx7cNKU7OVFPuwBOaj5tm6i/view?usp=sharing)
+''', unsafe_allow_html=True)
+
+st.header('Noteblockit Demo', anchor="home")
 st.image("./noteblock.png")
 
 max_duration = 30  # Maximum allowed duration in seconds
@@ -164,6 +187,10 @@ max_duration = 30  # Maximum allowed duration in seconds
 st.header('Helps separate audio into 4 tracks: vocals, drums, bass, and other, and combine them into a MIDI file.')
 st.write(f"For memory usage limitations on Streamlit apps, only audio less than {max_duration} seconds can be processed.")
 st.write(f"Uploaded audio longer than {max_duration} seconds will be trimmed to the first {max_duration} seconds.")
+
+st.divider()
+
+st.header("Music Source Separator", anchor="separator",)
 
 uploaded_file = st.file_uploader(
     label="Choose a wav file to separate",
@@ -189,11 +216,86 @@ if uploaded_file is not None:
             # Trim the audio tensor for mono (1 channel)
             audio = audio[:max_samples]
 
-        st.write(f"Audio length is longer than {max_duration} seconds. Trimming down to the first {max_duration} seconds.")
-
+        st.warning(f"Audio length is longer than {max_duration} seconds. Trimming down to the first {max_duration} seconds.", icon=None)
     st.write("File uploaded.")
     with st.spinner('Running separation...'):
         separate(audio, rate)
     st.success('Done!')
 else:
     st.write("No file uploaded.")
+
+st.divider()
+
+st.header("Code for Midi modifier and merger", anchor="mido",)
+
+st.write("Use the audio-to-midi converter of your choice to convert the output wav files into MIDI files.")
+st.write("Name the MIDI files as follows: bass.mid, vocals.mid, drums.mid, other.mid")
+
+st.code("pip install mido")
+
+st.write("This code requires mido to be installed.")
+
+st.code("""
+import mido
+from mido import MidiFile, MidiTrack, Message
+
+# Load individual MIDI files
+bass = MidiFile('bass.mid')
+vocal = MidiFile('vocals.mid')
+drums = MidiFile('drums.mid')
+other = MidiFile('other.mid')
+
+# Assign new MIDI programs (instruments)
+# Replace the numbers with the desired instrument numbers (0-127)
+bass_program = 32
+vocal_program = 0
+drums_program = 0
+other_program = 24
+
+bass_channel = 0
+vocal_channel = 1
+drums_channel = 9   # Channel 10 in human-readable form (0-based indexing)
+other_channel = 3
+
+# Create a function to insert a program change at the beginning of a track
+def set_channel_and_program(track, channel, program):
+    new_track = MidiTrack()
+    new_track.append(Message('program_change', channel=channel, program=program, time=0))
+    for msg in track:
+        if not msg.is_meta:
+            msg.channel = channel
+        new_track.append(msg)
+    return new_track
+
+# Change instruments and prepare tracks for merging
+def merge_tracks(tracks):
+    merged_track = MidiTrack()
+    for track in tracks:
+        for msg in track:
+            merged_track.append(msg)
+    return merged_track
+
+# Merge multiple tracks for each instrument
+bass_merged = merge_tracks(bass.tracks)
+vocal_merged = merge_tracks(vocal.tracks)
+drums_merged = merge_tracks(drums.tracks)
+other_merged = merge_tracks(other.tracks)
+
+# Set channel and program for the merged tracks
+bass_track = set_channel_and_program(bass_merged, bass_channel, bass_program)
+vocal_track = set_channel_and_program(vocal_merged, vocal_channel, vocal_program)
+drums_track = set_channel_and_program(drums_merged, drums_channel, drums_program)
+other_track = set_channel_and_program(other_merged, other_channel, other_program)
+
+# Combine tracks
+merged_mid = MidiFile()
+merged_mid.tracks.extend([bass_track, vocal_track, drums_track, other_track])
+
+# Save the merged MIDI file
+merged_mid.save('merged.mid')
+""")
+
+st.write("Input the merged.mid file into NoteBlock Studio to create the noteblock music.")
+
+st.header("Thanks for using Noteblockit!", anchor="credits")
+st.write("Created by Gen Tamada, Christy Yu, and Frank Zhong for UCSB Data Science Club 2022-2023")
