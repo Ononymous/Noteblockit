@@ -107,7 +107,7 @@ def separate(audio, rate):
         
         st.write(f"Playing {target}:")
         wav_buffer.seek(0)  # Reset buffer position to the start
-        st.audio(wav_buffer, format='audio/wav', sample_rate=separator.sample_rate)
+        st.audio(wav_buffer, format='audio/wav')
 
 st.title('Noteblockit Demo')
 st.image("./noteblock.png")
