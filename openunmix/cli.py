@@ -122,7 +122,24 @@ uploaded_file = st.file_uploader(
 )
 
 if uploaded_file is not None:
+    max_duration = 30  # Maximum allowed duration in seconds
+    
     audio, rate = torchaudio.load(uploaded_file, format="wav")
+    num_samples = audio.shape[-1]
+    duration = num_samples / rate
+
+    if duration > max_duration:
+        max_samples = int(max_duration * rate)
+
+        if len(audio.shape) == 2:
+            # Trim the audio tensor for stereo (2 channels)
+            audio = audio[:, :max_samples]
+        elif len(audio.shape) == 1:
+            # Trim the audio tensor for mono (1 channel)
+            audio = audio[:max_samples]
+
+        st.write(f"Audio length is longer than {max_duration} seconds. Trimming down to the first {max_duration} seconds.")
+
     st.write("File uploaded. Separating...")
     separate(audio, rate)
 else:
