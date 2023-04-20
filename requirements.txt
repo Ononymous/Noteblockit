@@ -4,4 +4,4 @@ numpy
 tqdm
 soundfile
 basic-pitch
-MIDIFile
+MIDIUtil
