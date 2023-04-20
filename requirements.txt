@@ -1,7 +1,7 @@
 torch
 torchaudio
-numpy
+numpy==1.21
 tqdm
 soundfile
-basic-pitch
+basic_pitch
 MIDIUtil
