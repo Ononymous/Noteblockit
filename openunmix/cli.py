@@ -112,7 +112,12 @@ def separate(audio, rate):
 st.title('Noteblockit Demo')
 st.image("./noteblock.png")
 
+max_duration = 30  # Maximum allowed duration in seconds
+
 st.header('Helps separate audio into 4 tracks: vocals, drums, bass, and other, and combine them into a MIDI file.')
+st.write(f"For memory usage limitations on Streamlit apps, only audio less than {max_duration} seconds can be processed.")
+st.write(f"Uploaded audio longer than {max_duration} seconds will be trimmed to the first {max_duration} seconds.")
+
 uploaded_file = st.file_uploader(
     label="Choose a wav file to separate",
     type="wav",
@@ -122,7 +127,6 @@ uploaded_file = st.file_uploader(
 )
 
 if uploaded_file is not None:
-    max_duration = 30  # Maximum allowed duration in seconds
     
     audio, rate = torchaudio.load(uploaded_file, format="wav")
     num_samples = audio.shape[-1]
