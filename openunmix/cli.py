@@ -191,7 +191,9 @@ if uploaded_file is not None:
 
         st.write(f"Audio length is longer than {max_duration} seconds. Trimming down to the first {max_duration} seconds.")
 
-    st.write("File uploaded. Separating...")
-    separate(audio, rate)
+    st.write("File uploaded.")
+    with st.spinner('Running separation...'):
+        separate(audio, rate)
+    st.success('Done!')
 else:
     st.write("No file uploaded.")
