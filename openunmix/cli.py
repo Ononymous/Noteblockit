@@ -2,6 +2,10 @@ import torch
 import torchaudio
 import streamlit as st
 import io
+import os
+from basic_pitch.inference import predict
+from basic_pitch import ICASSP_2022_MODEL_PATH
+from midiutil import MIDIFile
 
 import utils
 import predict
@@ -14,7 +18,14 @@ import predict
 #   --targets vocals drums bass \
 #   --residual other \
 #   --verbose
+midi_tracks = []
 
+instruments = {
+    "vocals": 0,  # Piano
+    "drums": 9,   # Drums are automatically assigned to Channel 9 in MIDI
+    "bass": 32,   # Bass
+    "other": 24   # Guitar
+}
 
 class separator_args:
     def __init__(self, model, targets, outdir, ext, start, duration, no_cuda, audio_backend, niter, wiener_win_len, residual, aggregate, filterbank, verbose):
@@ -50,8 +61,27 @@ args = separator_args(
     verbose = True
 )
 
+def audio_to_midi(audio_data, rate):
+    basic_pitch_model = ICASSP_2022_MODEL_PATH
+    _, midi_data, _ = predict(audio_data, rate, basic_pitch_model)
+    return midi_data
+
+def create_merged_midi(midi_tracks, instruments, output_file):
+    merged_midi = MIDIFile(len(midi_tracks))
+
+    for idx, (track, instrument) in enumerate(zip(midi_tracks, instruments)):
+        merged_midi.addTrackName(idx, 0, track)
+        merged_midi.addProgramChange(idx, 0, 0, instrument)
+
+        for note in track.notes:
+            merged_midi.addNote(idx, 0, note.pitch, note.start, note.end, note.velocity)
+
+    with open(output_file, "wb") as output_midi:
+        merged_midi.writeFile(output_midi)
+        
 
 def separate(audio, rate):
+    midi_tracks = []
     torchaudio.set_audio_backend(args.audio_backend)
     aggregate_dict = None
 
@@ -90,8 +120,10 @@ def separate(audio, rate):
     )
     for target, estimate in estimates.items():
         audio_data = torch.squeeze(estimate).to("cpu").numpy()
+
+        midi_data = audio_to_midi(audio_data, separator.sample_rate)
+        midi_tracks.append(midi_data)
         
-        # Convert the audio_data to WAV format with the correct sample width
         wav_buffer = io.BytesIO()
         input_tensor = torch.tensor(audio_data)
         if input_tensor.ndim == 3:
@@ -104,10 +136,23 @@ def separate(audio, rate):
             format="wav",
             bits_per_sample=16,
         )
+        target = "other" if target == "residual" else target
         
         st.write(f"Playing {target}:")
-        wav_buffer.seek(0)  # Reset buffer position to the start
+        wav_buffer.seek(0)
         st.audio(wav_buffer, format='audio/wav')
+
+    # Merge MIDI tracks
+    output_file = "merged_midi.mid"
+    create_merged_midi(midi_tracks, [instruments[target] for target in estimates.keys()], output_file)
+
+    # Display the merged MIDI file
+    st.write("Merged MIDI file:")
+    st.download_button("Download Merged MIDI", file_path_or_url=output_file, file_name="merged_midi.mid")
+
+
+
+
 
 st.title('Noteblockit Demo')
 st.image("./noteblock.png")

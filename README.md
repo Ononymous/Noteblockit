@@ -8,6 +8,8 @@ We developed a recurrent neural network model that converts an mp3 file into a m
 
 Mp3 to midi conversions only work with simple single-melody music files, but by developing a model that can seperate the mp3 spectrograms into four main instruments using filters, and merging the resulting 4 midi files into 1, we allow more complex songs to be converted into midi files.
 
+[link to demo](https://tinyurl.com/noteblockit)
+
 ## Stats and Parameters of resulting model
 | Parameter                    | Value                       |
 |------------------------------|-----------------------------|
