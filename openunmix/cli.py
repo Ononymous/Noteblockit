@@ -3,6 +3,7 @@ import torchaudio
 import streamlit as st
 import io
 import os
+import basic_pitch
 from basic_pitch.inference import predict
 from basic_pitch import ICASSP_2022_MODEL_PATH
 from midiutil import MIDIFile
