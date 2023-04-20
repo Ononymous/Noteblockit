@@ -3,5 +3,5 @@ torchaudio
 numpy
 tqdm
 soundfile
-git+https://github.com/spotify/basic_pitch.git
+basic-pitch
 MIDIFile
