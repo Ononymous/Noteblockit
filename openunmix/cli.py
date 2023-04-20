@@ -123,7 +123,7 @@ uploaded_file = st.file_uploader(
 
 if uploaded_file is not None:
     audio, rate = torchaudio.load(uploaded_file, format="wav")
-    st.write("File uploaded.")
+    st.write("File uploaded. Separating...")
     separate(audio, rate)
 else:
     st.write("No file uploaded.")
