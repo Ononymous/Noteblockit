@@ -1,6 +1,7 @@
 import torch
 import torchaudio
 import streamlit as st
+import io
 
 import utils
 import predict
@@ -89,8 +90,24 @@ def separate(audio, rate):
     )
     for target, estimate in estimates.items():
         audio_data = torch.squeeze(estimate).to("cpu").numpy()
+        
+        # Convert the audio_data to WAV format with the correct sample width
+        wav_buffer = io.BytesIO()
+        input_tensor = torch.tensor(audio_data)
+        if input_tensor.ndim == 3:
+            input_tensor = input_tensor.squeeze(0)
+
+        torchaudio.save(
+            wav_buffer,
+            input_tensor,
+            sample_rate=separator.sample_rate,
+            format="wav",
+            bits_per_sample=16,
+        )
+        
         st.write(f"Playing {target}:")
-        st.audio(audio_data, format='audio/wav', sample_rate=separator.sample_rate)
+        wav_buffer.seek(0)  # Reset buffer position to the start
+        st.audio(wav_buffer, format='audio/wav', sample_rate=separator.sample_rate)
 
 st.title('Noteblockit Demo')
 st.image("./noteblock.png")
