@@ -112,16 +112,7 @@ def separate(audio, rate):
 st.title('Noteblockit Demo')
 st.image("./noteblock.png")
 
-# max_duration = 30  # Maximum allowed duration in seconds
-
-max_duration = st.number_input(
-    "Maximum audio duration (seconds)",
-    min_value=1,
-    max_value=600,
-    value=30,
-    step=1,
-    help="Set the maximum allowed audio duration in seconds",
-)
+max_duration = 30  # Maximum allowed duration in seconds
 
 st.header('Helps separate audio into 4 tracks: vocals, drums, bass, and other, and combine them into a MIDI file.')
 st.write(f"For memory usage limitations on Streamlit apps, only audio less than {max_duration} seconds can be processed.")
