@@ -1,6 +1,6 @@
 torch
 torchaudio
-numpy==1.21
+numpy<=1.21
 tqdm
 soundfile
 basic_pitch
