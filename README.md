@@ -4,9 +4,9 @@
 
 Noteblockit is a project that turns any music file like an mp3 and convert it into a noteblock system in game. 
 
-We developed a recurrent neural network model that converts an mp3 file into a midi file, which is a digital music score sheet storing data on playable sheet music. 
+We developed a recurrent neural network model that converts a music file into its stem recordings (bass, drums, vocals, other), and then convert each stem recording into a midi file, which is a digital music score sheet storing data on playable sheet music.
 
-Mp3 to midi conversions only work with simple single-melody music files, but by developing a model that can seperate the mp3 spectrograms into four main instruments using filters, and merging the resulting 4 midi files into 1, we allow more complex songs to be converted into midi files.
+Mp3 to midi conversions only work with simple single-melody music files, but by developing a model that can separate the mixture audio into four main instruments using masks, and merging the resulting 4 midi files into 1, we allow more complex songs to be converted into midi files.
 
 [link to demo](https://tinyurl.com/noteblockit)
 
