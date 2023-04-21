@@ -12,6 +12,8 @@ Mp3 to midi conversions only work with simple single-melody music files, but by 
 
 [link to video](https://drive.google.com/file/d/1Is4tc7p6udx7cNKU7OVFPuwBOaj5tm6i/view?usp=sharing)
 
+[link to slides](https://docs.google.com/presentation/d/19rsL1rv-XUaKtNN9ZmMs2X_wZAFRyLiQj_INUjV1AKA/edit?usp=sharing)
+
 ## Stats and Parameters of resulting model
 | Parameter                    | Value                       |
 |------------------------------|-----------------------------|
