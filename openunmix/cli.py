@@ -172,6 +172,7 @@ st.sidebar.markdown('''
 # Sections
 - [Home](#home)
 - [Music Source Separator](#separator)
+- [What's next?](#video)
 - [Midi modifier and merger](#mido)
 - [Credits](#credits)
 # Other links
@@ -224,6 +225,15 @@ if uploaded_file is not None:
     st.success('Done!')
 else:
     st.write("No file uploaded.")
+
+st.divider()
+
+st.header("What's Next?", anchor="video",)
+
+video_file = open('demo.mp4', 'rb')
+video_bytes = video_file.read()
+
+st.video(video_bytes)
 
 st.divider()
 
