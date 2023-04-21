@@ -177,6 +177,7 @@ st.sidebar.markdown('''
 # Other links
 - [Github](https://github.com/Ononymous/Noteblockit)
 - [Video Demo](https://drive.google.com/file/d/1Is4tc7p6udx7cNKU7OVFPuwBOaj5tm6i/view?usp=sharing)
+- [Presentation](https://docs.google.com/presentation/d/19rsL1rv-XUaKtNN9ZmMs2X_wZAFRyLiQj_INUjV1AKA/edit?usp=sharing)
 ''', unsafe_allow_html=True)
 
 st.header('Noteblockit Demo', anchor="home")
